@@ -49,43 +49,76 @@ static void print_tile(uint8_t t[4][4])
     {
         for (int col = 0; col < 4; col++)
         {
-            printf("%d ", t[row][col]);
+            printf("%2d ", t[row][col]);
         }
+        printf("\n");
     }
+    printf("\n");
 }
 
-static int get_pos(struct game_state *start)
+int get_dx(int m)
+{
+    int dx[4] = {-1,  1,  0,  0};
+    return dx[m];
+}
+
+int get_dy(int m)
+{
+    int dy[4] = { 0,  0, -1,  1};
+    return dy[m];
+}
+
+static int get_pos(struct game_state *start, struct linked_list *list)
 {
     uint8_t t[4][4];
     memcpy(t, start->tiles, sizeof(start->tiles));
     print_tile(t);
-    #if 0
-    for (int row = 0; row < 4; row++)
+    int start_row = start->empty_row;
+    int start_col = start->empty_col;
+
+    // traverse ll
+    struct list_node *curr = list->head;
+
+    // transform T
+    while (1)
     {
-        for (int col = 0; col < 4; col++)
+        if (curr == NULL)
+            break;
+
+        int m = curr->value;
+        int x = get_dx(m);
+        int y = get_dy(m);
+
+        int row = start_row + x;
+        int col = start_col + y;
+
+        t[start_row][start_col] = t[row][col];
+        t[row][col] = 0;
+        start_row = row;
+        start_col = col;
+
+        curr = curr->next;
+    }
+    print_tile(t);
+
+    // find new paths
+    //int m_list[4] = {-1, -1, -1, -1};
+    //int m_count = 0;
+    for (int m = 0; m < 4; m++)
+    {
+        int x = get_dx(m);
+        int y = get_dy(m);
+        if ((start_row + x) > 3 || (start_row + x) < 0) continue;
+        if ((start_col + y) > 3 || (start_col + y) < 0) continue;
+        int row = start_row + x;
+        int col = start_col + y;
+        int value = t[row][col];
+        if (value != get_expected_value(row, col))
         {
-            printf("%d ", t[row][col]);
+            printf("path: row: %d col: %d val: %d\n", row, col, value);
         }
     }
-    #endif
 
-#if 0
-    // tmp, start_row, start_col
-    t = tile.copy()
-    start_row = start_row_og
-    start_col = start_col_og
-    for n in range(len(q)):
-        x, y = q[n]
-        #x, y = q.popleft()
-        #print(x, y)
-        row = start_row + x
-        col = start_col + y
-        t[start_row][start_col] = t[row][col]
-        t[row][col] = 0
-        start_row = row
-        start_col = col
-    return t, start_row, start_col
-#endif
     return 0;
 }
 
@@ -128,7 +161,7 @@ int number_of_moves(struct game_state start)
         }
     }
 
-    get_pos(&start);
+    get_pos(&start, &list);
 #if 0
     //uint8_t t[4][4];
     //memcpy(t, start.tiles, sizeof(start.tiles));
