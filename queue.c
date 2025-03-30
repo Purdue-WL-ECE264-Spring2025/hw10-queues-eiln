@@ -34,12 +34,23 @@ static int is_tile_done(struct game_state start)
 
 int number_of_moves(struct game_state start)
 {
+    is_tile_done(start);
+    #if 0
     if (is_tile_done(start))
     {
         printf("found\n");
         return 0;
     }
+    #endif
 
+    struct linked_list list;
+    list.head = NULL;
+    insert_at_tail(&list, 3);
+    insert_at_tail(&list, 4);
+    dump_list(NULL, list);
+    free_list(list);
+
+    #if 0
     int dx[4] = {-1,  1,  0,  0};
     int dy[4] = { 0,  0, -1,  1};
     for (int m = 0; m < 4; m++)
@@ -54,8 +65,8 @@ int number_of_moves(struct game_state start)
         {
             printf("incorrect: row: %d col: %d val: %d\n", row, col, start.tiles[row][col]);
         }
-
     }
+    #endif
 
     return 0;
 }

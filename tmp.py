@@ -58,7 +58,7 @@ def get_pos(tile, q):
         start_col = col
     return t, start_row, start_col
 
-pot = []
+pot = deque()
 moves = 0
 for n in range(1):
     if ((tile == expected_tile).all()):
@@ -79,7 +79,6 @@ for n in range(1):
         value = tile[row][col]
         if (value != get_value(row, col)): # == expected
             print("incorrect value: ", row, col, value)
-            paths.append((x, y))
             pot.append(deque([(x, y)]))
 
 print(pot)
