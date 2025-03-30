@@ -4,7 +4,7 @@
 
 struct list_node *new_node(size_t value) {
   struct list_node *new = malloc(sizeof(struct list_node));
-  printf("new node: %p: %lx\n", new, value);
+  //printf("new node: %p: %lx\n", new, value);
   new->value = value;
   new->next = NULL;
   return new;
