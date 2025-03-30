@@ -45,7 +45,7 @@ static inline int get_dy(int m)
     return dy[m];
 }
 
-#if 0
+#if 1
 static void print_tile(uint8_t t[4][4])
 {
     for (int row = 0; row < 4; row++)
@@ -64,7 +64,7 @@ int test(struct linked_list list)
 {
     int ret = 0;
 
-    for (int k = 0; k < 10; k++)
+    while (1)
     {
         struct linked_list list_new;
         list_new.head = NULL;
@@ -146,7 +146,7 @@ int test(struct linked_list list)
 
 int number_of_moves(struct game_state start)
 {
-    //print_tile(start.tiles);
+    print_tile(start.tiles);
     if (is_tile_done(start))
     {
         printf("found\n");
