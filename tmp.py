@@ -97,9 +97,10 @@ for n in range(9):
             break
         else:
             tmp, start_row, start_col = get_pos(tile, pot[p])
-            print(tmp)
+            #print(tmp)
             dx = [-1, 1,  0, 0]
             dy = [ 0, 0, -1, 1]
+            tmp_paths = []
             for m in range(4):
                 x, y = dx[m], dy[m]
                 if (start_row + x) > 3 or (start_row + x) < 0: continue
@@ -112,6 +113,7 @@ for n in range(9):
                     q = deepcopy(pot[p])
                     q.append((x, y))
                     paths.append(q)
+                    tmp_paths.append((x, y))
                     #paths.append((x, y))
                     #pot[p].append((x, y))
         print("="*50)
@@ -119,54 +121,5 @@ for n in range(9):
         #print(paths)
         #pot = paths
     if (found): break
-    print(paths)
+    #print(paths)
     pot = paths
-
-
-if 0:
-    if (len(paths) == 1):
-        x, y = paths[0]
-        row = start_row + x
-        col = start_col + y
-        value = tile[row][col]
-        tile[start_row][start_col] = value
-        tile[row][col] = 0
-        moves += 1
-        start_row = row
-        start_col = col
-        stop = 1
-        print("moved", x, y)
-    elif len(paths) > 1:
-        print("multiple paths:")
-        print(paths)
-        raise ValueError("stop")
-
-        index = 0
-        if (n == 2): #raise ValueError("stop")
-            index = 0
-        if (n == 3):
-            index = 1
-
-        x, y = paths[index]
-        row = start_row + x
-        col = start_col + y
-        value = tile[row][col]
-        #print(get_value(start_row, start_col), get_value(row, col))
-        # n0: 0th
-        # n1: 0th
-        if (value == get_value(start_row, start_col) or 1): # == expected
-            print("YO", row, col, value)
-            tile[start_row][start_col] = value
-            tile[row][col] = 0
-            moves += 1
-            start_row = row
-            start_col = col
-            stop = 1
-            paths = []
-            #break
-        if (len(paths)): raise ValueError("fuck")
-    print(n)
-    print("-"*60)
-
-    print(tile)
-    print(start_row, start_col)
