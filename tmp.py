@@ -19,7 +19,7 @@ def get_value(row, col):
     return (row * 4) + col + 1
 
 moves = 0
-for n in range(3):
+for n in range(5):
     #if (tile[start_row][start_col] == 0 and start_row == 3 and start_col == 3):
     #    print("Found")
         #print(f"moves: {moves}")
@@ -61,7 +61,7 @@ for n in range(3):
             col = start_col + y
             value = tile[row][col]
             #print(get_value(start_row, start_col), get_value(row, col))
-            if (value == get_value(start_row, start_col) or (n == 0)): # == expected
+            if (value == get_value(start_row, start_col)): # == expected
                 print("YO", row, col, value)
                 tile[start_row][start_col] = value
                 tile[row][col] = 0
@@ -69,8 +69,9 @@ for n in range(3):
                 start_row = row
                 start_col = col
                 stop = 1
+                paths = []
                 break
-        #raise ValueError("fuck")
+        if (len(paths)): raise ValueError("fuck")
     print("-"*60)
 
     print(tile)
