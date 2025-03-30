@@ -137,6 +137,80 @@ static int get_pos(struct game_state *start, struct linked_list *list)
 }
 #endif
 
+int test(struct linked_list *list)
+{
+    struct list_node *curr = list->head;
+    for (int k = 0; k < 4; k++)
+    {
+        if (curr == NULL) break;
+        struct game_state start = deserialize(curr->value);
+        if (is_tile_done(start))
+        {
+            printf("found\n");
+            return start.num_steps;
+            break;
+        }
+
+        //print_tile(state.tiles);
+
+        int m_list[4] = {-1, -1, -1, -1};
+        int m_count = 0;
+        for (int m = 0; m < 4; m++)
+        {
+            int x = get_dx(m);
+            int y = get_dy(m);
+            if ((start.empty_row + x) > 3 || (start.empty_row + x) < 0) continue;
+            if ((start.empty_col + y) > 3 || (start.empty_col + y) < 0) continue;
+            int row = start.empty_row + x;
+            int col = start.empty_col + y;
+            if (start.tiles[row][col] != get_expected_value(row, col))
+            {
+                printf("path: row: %d col: %d val: %d\n", row, col, start.tiles[row][col]);
+                m_list[m_count++] = m;
+            }
+        }
+
+        for (int i = 0; i < m_count; i++)
+        {
+            int m = m_list[i];
+            struct game_state new;
+            memcpy(new.tiles, start.tiles, sizeof(start.tiles));
+            int x = get_dx(m);
+            int y = get_dy(m);
+
+            int row = start.empty_row + x;
+            int col = start.empty_col + y;
+            int value = start.tiles[row][col];
+            new.tiles[start.empty_row][start.empty_col] = value;
+            new.tiles[row][col] = 0;
+            new.empty_row = row;
+            new.empty_col = col;
+            new.num_steps = start.num_steps + 1;
+            insert_at_tail(list, serialize(new));
+        }
+
+        curr = curr->next;
+
+    }
+
+    dump_list(NULL, *list);
+
+    curr = list->head;
+    for (int n = 0; n < 9; n++)
+    {
+        if (curr == NULL)
+        {
+            break;
+        }
+        struct game_state state = deserialize(curr->value);
+        printf("num_steps: %d\n", state.num_steps);
+        print_tile(state.tiles);
+        curr = curr->next;
+    }
+
+    return 0;
+}
+
 int number_of_moves(struct game_state start)
 {
     print_tile(start.tiles);
@@ -160,54 +234,8 @@ int number_of_moves(struct game_state start)
     free_list(list);
     #endif
 
-    //insert_at_tail(&list, serialize(start));
-
-    int m_list[4] = {-1, -1, -1, -1};
-    int m_count = 0;
-    for (int m = 0; m < 4; m++)
-    {
-        int x = get_dx(m);
-        int y = get_dy(m);
-        if ((start.empty_row + x) > 3 || (start.empty_row + x) < 0) continue;
-        if ((start.empty_col + y) > 3 || (start.empty_col + y) < 0) continue;
-        int row = start.empty_row + x;
-        int col = start.empty_col + y;
-        if (start.tiles[row][col] != get_expected_value(row, col))
-        {
-            printf("path: row: %d col: %d val: %d\n", row, col, start.tiles[row][col]);
-            m_list[m_count++] = m;
-        }
-    }
-
-    for (int i = 0; i < m_count; i++)
-    {
-        int m = m_list[i];
-        struct game_state new;
-        memcpy(new.tiles, start.tiles, sizeof(start.tiles));
-        int x = get_dx(m);
-        int y = get_dy(m);
-
-        int row = start.empty_row + x;
-        int col = start.empty_col + y;
-        int value = start.tiles[row][col];
-        new.tiles[start.empty_row][start.empty_col] = value;
-        new.tiles[row][col] = 0;
-        new.empty_row = row;
-        new.empty_col = col;
-        new.num_steps = start.num_steps + 1;
-        insert_at_tail(&list, serialize(new));
-    }
-    
-    dump_list(NULL, list);
-
-    struct list_node *curr = list.head;
-    while (1)
-    {
-        if (curr == NULL) break;
-        struct game_state state = deserialize(curr->value);
-        print_tile(state.tiles);
-        curr = curr->next;
-    }
+    insert_at_tail(&list, serialize(start));
+    int num_steps = test(&list);
 
     //get_pos(&start, &list);
 #if 0
@@ -226,5 +254,5 @@ int number_of_moves(struct game_state start)
     }
 #endif
 
-    return 0;
+    return num_steps;
 }
