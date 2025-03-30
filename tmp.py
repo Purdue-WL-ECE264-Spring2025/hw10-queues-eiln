@@ -56,11 +56,14 @@ for n in range(5):
     elif len(paths) > 1:
         print("multiple paths:")
         print(paths)
+        if (n == 2): raise ValueError("stop")
         for (x, y) in paths:
             row = start_row + x
             col = start_col + y
             value = tile[row][col]
             #print(get_value(start_row, start_col), get_value(row, col))
+            # n0: 0th
+            # n1: 0th
             if (value == get_value(start_row, start_col)): # == expected
                 print("YO", row, col, value)
                 tile[start_row][start_col] = value
