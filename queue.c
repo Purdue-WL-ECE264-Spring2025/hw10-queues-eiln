@@ -80,7 +80,7 @@ int get_num_steps(struct linked_list list)
                 return ret;
             }
 
-            int m_list[4] = {-1, -1, -1, -1};
+            int m_list[4] = {0};
             int m_count = 0;
             for (int m = 0; m < 4; m++)
             {
