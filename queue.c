@@ -34,14 +34,11 @@ static int is_tile_done(struct game_state start)
 
 int number_of_moves(struct game_state start)
 {
-    is_tile_done(start);
-    #if 0
     if (is_tile_done(start))
     {
         printf("found\n");
         return 0;
     }
-    #endif
 
     struct linked_list list;
     list.head = NULL;
@@ -50,8 +47,9 @@ int number_of_moves(struct game_state start)
     insert_at_tail(&list, 5);
     remove_from_tail(&list);
     remove_from_tail(&list);
-    dump_list(NULL, list);
-    free_list(list);
+    remove_from_tail(&list);
+    //dump_list(NULL, list);
+    //free_list(list);
 
     #if 0
     int dx[4] = {-1,  1,  0,  0};

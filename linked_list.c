@@ -4,6 +4,7 @@
 
 struct list_node *new_node(size_t value) {
   struct list_node *new = malloc(sizeof(struct list_node));
+  printf("new node: %p: %lx\n", new, value);
   new->value = value;
   new->next = NULL;
   return new;
@@ -58,7 +59,7 @@ size_t remove_from_tail(struct linked_list *list)
     }
     value = curr->value;
     free(curr);
-    prev->next = NULL;
+    if (prev) prev->next = NULL;
   }
 
   return value;
@@ -84,6 +85,9 @@ void free_list(struct linked_list list)
   {
     remove_from_tail(&list);
   }
+  list.head->next = NULL;
+  free(list.head);
+  //printf("head: %p\n", list.head);
   //list.head = NULL;
 }
 
