@@ -47,9 +47,9 @@ int number_of_moves(struct game_state start)
     insert_at_tail(&list, 5);
     remove_from_tail(&list);
     remove_from_tail(&list);
-    remove_from_tail(&list);
-    //dump_list(NULL, list);
-    //free_list(list);
+    //remove_from_tail(&list);
+    dump_list(NULL, list);
+    free_list(list);
 
     #if 0
     int dx[4] = {-1,  1,  0,  0};
