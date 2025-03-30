@@ -139,18 +139,20 @@ static int get_pos(struct game_state *start, struct linked_list *list)
 
 int test(struct linked_list *list)
 {
-    struct list_node *curr = list->head;
+    int ret = 0;
+    //struct list_node *curr = NULL;
     for (int k = 0; k < 4; k++)
     {
-        if (curr == NULL) break;
-        struct game_state start = deserialize(curr->value);
+        size_t curr = remove_from_head(list);
+        //if (curr == NULL) break;
+        struct game_state start = deserialize(curr);
         if (is_tile_done(start))
         {
             printf("found\n");
-            return start.num_steps;
+            ret = start.num_steps;
+            //return start.num_steps;
             break;
         }
-
         //print_tile(state.tiles);
 
         int m_list[4] = {-1, -1, -1, -1};
@@ -189,12 +191,12 @@ int test(struct linked_list *list)
             insert_at_tail(list, serialize(new));
         }
 
-        curr = curr->next;
+        //curr = curr->next;
 
     }
 
     dump_list(NULL, *list);
-
+#if 0
     curr = list->head;
     for (int n = 0; n < 9; n++)
     {
@@ -203,12 +205,21 @@ int test(struct linked_list *list)
             break;
         }
         struct game_state state = deserialize(curr->value);
+        if (is_tile_done(state))
+        {
+            printf("found\n");
+            //return start.num_steps;
+            break;
+        }
+        else if ()
+
         printf("num_steps: %d\n", state.num_steps);
         print_tile(state.tiles);
         curr = curr->next;
     }
+#endif
 
-    return 0;
+    return ret;
 }
 
 int number_of_moves(struct game_state start)
