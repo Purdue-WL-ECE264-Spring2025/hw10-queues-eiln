@@ -45,7 +45,6 @@ static inline int get_dy(int m)
     return dy[m];
 }
 
-#if 1
 static void print_tile(uint8_t t[4][4])
 {
     for (int row = 0; row < 4; row++)
@@ -58,9 +57,8 @@ static void print_tile(uint8_t t[4][4])
     }
     printf("\n");
 }
-#endif
 
-int test(struct linked_list list)
+int get_num_steps(struct linked_list list)
 {
     int ret = 0;
 
@@ -121,25 +119,11 @@ int test(struct linked_list list)
             curr = curr->next;
         }
 
-        //dump_list(NULL, list_new);
         free_list(list);
         list = list_new;
     }
 
     free_list(list);
-#if 0
-    struct list_node *c = NULL;
-    c = list_new.head;
-    for (int n = 0; n < 9; n++)
-    {
-        if (c == NULL)
-            break;
-        struct game_state state = deserialize(c->value);
-        printf("num_steps: %d\n", state.num_steps);
-        print_tile(state.tiles);
-        c = c->next;
-    }
-#endif
 
     return ret;
 }
@@ -149,43 +133,14 @@ int number_of_moves(struct game_state start)
     print_tile(start.tiles);
     if (is_tile_done(start))
     {
-        printf("found\n");
         return 0;
     }
 
     struct linked_list list;
     list.head = NULL;
-    (void)list;
-    #if 0
-    insert_at_tail(&list, 3);
-    insert_at_tail(&list, 4);
-    insert_at_tail(&list, 5);
-    remove_from_tail(&list);
-    remove_from_tail(&list);
-    //remove_from_tail(&list);
-    dump_list(NULL, list);
-    free_list(list);
-    #endif
 
     insert_at_tail(&list, serialize(start));
-    int num_steps = test(list);
-
-    //get_pos(&start, &list);
-#if 0
-    //uint8_t t[4][4];
-    //memcpy(t, start.tiles, sizeof(start.tiles));
-    struct list_node *curr = list.head;
-    for (int n = 0; n < 9; n++)
-    {
-        if (curr == NULL)
-        {
-            break;
-        }
-
-        printf("m: %ld\n", curr->value);
-        curr = curr->next;
-    }
-#endif
+    int num_steps = get_num_steps(list);
 
     return num_steps;
 }
