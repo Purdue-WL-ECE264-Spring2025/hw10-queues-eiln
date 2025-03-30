@@ -10,8 +10,10 @@ def is_valid(pos, N):
 
 # Function to find the minimum distance of a knight to reach the destination using BFS
 def min_distance_knight(start, end, N):
-    dx = [-2, -2, -1, -1, 1, 1, 2, 2]
-    dy = [-1, 1, -2, 2, -2, 2, -1, 1]
+    #dx = [-2, -2, -1, -1, 1, 1, 2, 2]
+    #dy = [-1, 1, -2, 2, -2, 2, -1, 1]
+    dx = [-1, -1, -1,  0,  0,  1,  1,  1]
+    dy = [-1,  1,  0, -1,  1, -1,  0,  1]
 
     visited = [[False for j in range(N)] for i in range(N)]
     distance = [[0 for j in range(N)] for i in range(N)]
@@ -36,8 +38,8 @@ def min_distance_knight(start, end, N):
     return -1
 
 # Example usage
-start = (0, 0)
-end = (7, 7)
+start = (2, 2)
+end = (1, 2)
 N = 8
 
 start_time = time.time()
