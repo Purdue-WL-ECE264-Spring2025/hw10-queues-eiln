@@ -3,8 +3,8 @@ from collections import deque
 from copy import deepcopy
 
 #x = "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 0"
-#x = "1 2 3 4 5 6 0 8 9 10 7 12 13 14 11 15"
-x = "1 2 3 4 5 6 7 8 9 10 0 12 13 14 11 15"
+x = "1 2 3 4 5 6 0 8 9 10 7 12 13 14 11 15"
+#x = "1 2 3 4 5 6 7 8 9 10 0 12 13 14 11 15"
 #x = "1 3 6 4 5 2 11 7 9 10 15 8 13 14 0 12"
 #x = "1 2 3 4 5 6 7 8 9 10 11 12 13 14 0 15"
 tile = x.split()
@@ -92,6 +92,8 @@ for n in range(3):
     for p in range(len(pot)):
         if (check_end(tile, pot[p])):
             found = 1
+            print("FOUND")
+            print(f"moves: {len(pot[p])}")
             break
         else:
             tmp, start_row, start_col = get_pos(tile, pot[p])
@@ -116,6 +118,7 @@ for n in range(3):
         #print(pot)
         #print(paths)
         #pot = paths
+    if (found): break
     print(paths)
     pot = paths
 
