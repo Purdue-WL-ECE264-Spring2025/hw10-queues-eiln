@@ -51,7 +51,6 @@ void rotate(int n)
   {
     if (check_prime(rotation))
     {
-        //printf("prime\n");
       print_One = 1;
       onlyPrime = 1;
     }
@@ -59,7 +58,6 @@ void rotate(int n)
     {
       prime = 0;
     }
-    //printf("rotation: %d\n", rotation);
     rotation = rotateNum(rotation, digits);
   }
   while (rotation != original);
