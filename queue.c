@@ -40,5 +40,22 @@ int number_of_moves(struct game_state start)
         return 0;
     }
 
+    int dx[4] = {-1,  1,  0,  0};
+    int dy[4] = { 0,  0, -1,  1};
+    for (int m = 0; m < 4; m++)
+    {
+        int x = dx[m];
+        int y = dy[m];
+        if ((start.empty_row + x) > 3 || (start.empty_row + x) < 0) continue;
+        if ((start.empty_col + y) > 3 || (start.empty_col + y) < 0) continue;
+        int row = start.empty_row + x;
+        int col = start.empty_col + y;
+        if (start.tiles[row][col] != get_expected_value(row, col))
+        {
+            printf("incorrect: row: %d col: %d val: %d\n", row, col, start.tiles[row][col]);
+        }
+
+    }
+
     return 0;
 }
