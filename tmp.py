@@ -3,9 +3,9 @@ from collections import deque
 from copy import deepcopy
 
 #x = "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 0"
-x = "1 2 3 4 5 6 0 8 9 10 7 12 13 14 11 15"
-#x = "1 2 3 4 5 6 7 8 9 10 0 12 13 14 11 15"
-#x = "1 3 6 4 5 2 11 7 9 10 15 8 13 14 0 12"
+#x = "1 2 3 4 5 6 0 8 9 10 7 12 13 14 11 15" # 3
+#x = "1 2 3 4 5 6 7 8 9 10 0 12 13 14 11 15"  # 2
+x = "1 3 6 4 5 2 11 7 9 10 15 8 13 14 0 12"
 #x = "1 2 3 4 5 6 7 8 9 10 11 12 13 14 0 15"
 tile = x.split()
 tile = [int(t) for t in tile]
@@ -86,7 +86,7 @@ print(pot)
 print("-"*60)
 
 found = 0
-for n in range(3):
+for n in range(9):
     paths = []
     if (found): break
     for p in range(len(pot)):
