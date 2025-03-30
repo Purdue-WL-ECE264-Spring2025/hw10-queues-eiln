@@ -100,7 +100,7 @@ for n in range(9):
             #print(tmp)
             dx = [-1, 1,  0, 0]
             dy = [ 0, 0, -1, 1]
-            tmp_paths = []
+            #tmp_paths = []
             for m in range(4):
                 x, y = dx[m], dy[m]
                 if (start_row + x) > 3 or (start_row + x) < 0: continue
@@ -113,7 +113,7 @@ for n in range(9):
                     q = deepcopy(pot[p])
                     q.append((x, y))
                     paths.append(q)
-                    tmp_paths.append((x, y))
+                    #tmp_paths.append((x, y))
                     #paths.append((x, y))
                     #pot[p].append((x, y))
         print("="*50)
