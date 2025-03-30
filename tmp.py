@@ -9,6 +9,7 @@ tile = np.array(tile)
 tile = tile.reshape((4, 4))
 print(tile)
 
+expected_tile = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 0]])
 start_row, start_col = np.where(tile == 0)
 start_row = start_row[0]
 start_col = start_col[0]
@@ -19,11 +20,11 @@ def get_value(row, col):
     return (row * 4) + col + 1
 
 moves = 0
-for n in range(5):
-    #if (tile[start_row][start_col] == 0 and start_row == 3 and start_col == 3):
-    #    print("Found")
-        #print(f"moves: {moves}")
-        #break
+for n in range(10):
+    if ((tile == expected_tile).all()):
+        print("Found")
+        print(f"moves: {moves}")
+        break
     #expected = get_value(start_row, start_col)
 
     stop = 0
@@ -56,25 +57,32 @@ for n in range(5):
     elif len(paths) > 1:
         print("multiple paths:")
         print(paths)
-        if (n == 2): raise ValueError("stop")
-        for (x, y) in paths:
-            row = start_row + x
-            col = start_col + y
-            value = tile[row][col]
-            #print(get_value(start_row, start_col), get_value(row, col))
-            # n0: 0th
-            # n1: 0th
-            if (value == get_value(start_row, start_col)): # == expected
-                print("YO", row, col, value)
-                tile[start_row][start_col] = value
-                tile[row][col] = 0
-                moves += 1
-                start_row = row
-                start_col = col
-                stop = 1
-                paths = []
-                break
+
+        index = 0
+        if (n == 2): #raise ValueError("stop")
+            index = 0
+        if (n == 3):
+            index = 1
+
+        x, y = paths[index]
+        row = start_row + x
+        col = start_col + y
+        value = tile[row][col]
+        #print(get_value(start_row, start_col), get_value(row, col))
+        # n0: 0th
+        # n1: 0th
+        if (value == get_value(start_row, start_col) or 1): # == expected
+            print("YO", row, col, value)
+            tile[start_row][start_col] = value
+            tile[row][col] = 0
+            moves += 1
+            start_row = row
+            start_col = col
+            stop = 1
+            paths = []
+            #break
         if (len(paths)): raise ValueError("fuck")
+    print(n)
     print("-"*60)
 
     print(tile)
