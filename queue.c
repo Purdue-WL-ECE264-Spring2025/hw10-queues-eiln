@@ -64,67 +64,38 @@ int get_num_steps(struct queue *q)
 {
     int ret = 0;
 
-    while (1)
+    while (q->data.head != NULL)
     {
-        //struct linked_list list_new;
-        //list_new.head = NULL;
-        //struct list_node *curr = q.head;
-        while (1)
+        struct game_state start = dequeue(q);
+        if (is_tile_done(start))
         {
-            //struct list_node *curr = dequeue(q);
-            if (q->data.head == NULL) break;
-            //struct game_state start = deserialize(curr->value);
-            struct game_state start = dequeue(q);
-            if (is_tile_done(start))
-            {
-                //printf("found: steps: %d\n", start.num_steps);
-                ret = start.num_steps;
-                return ret;
-            }
+            ret = start.num_steps;
+            return ret;
+        }
 
-            int m_list[4] = {0};
-            int m_count = 0;
-            for (int m = 0; m < 4; m++)
+        for (int m = 0; m < 4; m++)
+        {
+            int dx = get_dx(m);
+            int dy = get_dy(m);
+            if ((start.empty_row + dx) > 3 || (start.empty_row + dx) < 0) continue;
+            if ((start.empty_col + dy) > 3 || (start.empty_col + dy) < 0) continue;
+            int row = start.empty_row + dx;
+            int col = start.empty_col + dy;
+            if (start.tiles[row][col] != get_expected_value(row, col))
             {
-                int x = get_dx(m);
-                int y = get_dy(m);
-                if ((start.empty_row + x) > 3 || (start.empty_row + x) < 0) continue;
-                if ((start.empty_col + y) > 3 || (start.empty_col + y) < 0) continue;
-                int row = start.empty_row + x;
-                int col = start.empty_col + y;
-                if (start.tiles[row][col] != get_expected_value(row, col))
-                {
-                    //printf("path: row: %d col: %d val: %d\n", row, col, start.tiles[row][col]);
-                    m_list[m_count++] = m;
-                }
-            }
-
-            for (int i = 0; i < m_count; i++)
-            {
-                int m = m_list[i];
                 struct game_state new;
                 memcpy(new.tiles, start.tiles, sizeof(start.tiles));
-                int x = get_dx(m);
-                int y = get_dy(m);
-
-                int row = start.empty_row + x;
-                int col = start.empty_col + y;
                 int value = start.tiles[row][col];
                 new.tiles[start.empty_row][start.empty_col] = value;
                 new.tiles[row][col] = 0;
                 new.empty_row = row;
                 new.empty_col = col;
                 new.num_steps = start.num_steps + 1;
-
-                //insert_at_tail(&list_new, serialize(new));
                 enqueue(q, new);
             }
-            //curr = curr->next;
         }
-        //free_list(list);
-        //list = list_new;
     }
-
+    
     return ret;
 }
 
@@ -139,7 +110,6 @@ int number_of_moves(struct game_state start)
     struct queue q;
     q.data.head = NULL;
     enqueue(&q, start);
-    //insert_at_tail(&list, serialize(start));
     int num_steps = get_num_steps(&q);
     free_list(q.data);
 
