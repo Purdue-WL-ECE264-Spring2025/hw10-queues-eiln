@@ -95,17 +95,13 @@ int get_num_steps(struct queue *q)
             }
         }
     }
-    
+
     return ret;
 }
 
 int number_of_moves(struct game_state start)
 {
     print_tile(start.tiles);
-    if (is_tile_done(start))
-    {
-        return 0;
-    }
 
     struct queue q;
     q.data.head = NULL;
