@@ -2,12 +2,14 @@
 #include "tile_game.h"
 #include <string.h>
 
-void enqueue(struct queue *q, struct game_state state) {
-
+void enqueue(struct queue *q, struct game_state state)
+{
+    insert_at_tail(&q->data, serialize(state));
 }
 
 struct game_state dequeue(struct queue *q) {
-    return (struct game_state){0};
+    size_t value = remove_from_head(&q->data);
+    return deserialize(value);
 }
 
 static int get_expected_value(int row, int col)
@@ -58,25 +60,25 @@ static void print_tile(uint8_t t[4][4])
     printf("\n");
 }
 
-int get_num_steps(struct linked_list list)
+int get_num_steps(struct queue *q)
 {
     int ret = 0;
 
     while (1)
     {
-        struct linked_list list_new;
-        list_new.head = NULL;
-
-        struct list_node *curr = list.head;
+        //struct linked_list list_new;
+        //list_new.head = NULL;
+        //struct list_node *curr = q.head;
         while (1)
         {
-            if (curr == NULL) break;
-            struct game_state start = deserialize(curr->value);
+            //struct list_node *curr = dequeue(q);
+            if (q->data.head == NULL) break;
+            //struct game_state start = deserialize(curr->value);
+            struct game_state start = dequeue(q);
             if (is_tile_done(start))
             {
                 //printf("found: steps: %d\n", start.num_steps);
                 ret = start.num_steps;
-                free_list(list);
                 return ret;
             }
 
@@ -114,16 +116,14 @@ int get_num_steps(struct linked_list list)
                 new.empty_col = col;
                 new.num_steps = start.num_steps + 1;
 
-                insert_at_tail(&list_new, serialize(new));
+                //insert_at_tail(&list_new, serialize(new));
+                enqueue(q, new);
             }
-            curr = curr->next;
+            //curr = curr->next;
         }
-
-        free_list(list);
-        list = list_new;
+        //free_list(list);
+        //list = list_new;
     }
-
-    free_list(list);
 
     return ret;
 }
@@ -136,11 +136,12 @@ int number_of_moves(struct game_state start)
         return 0;
     }
 
-    struct linked_list list;
-    list.head = NULL;
-
-    insert_at_tail(&list, serialize(start));
-    int num_steps = get_num_steps(list);
+    struct queue q;
+    q.data.head = NULL;
+    enqueue(&q, start);
+    //insert_at_tail(&list, serialize(start));
+    int num_steps = get_num_steps(&q);
+    free_list(q.data);
 
     return num_steps;
 }

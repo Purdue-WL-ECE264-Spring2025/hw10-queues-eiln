@@ -75,6 +75,7 @@ void free_list(struct linked_list list)
 {
   struct list_node *curr = list.head;
   int count = 0;
+  if (!curr) return;
   while (1)
   {
     if (curr->next == NULL)
